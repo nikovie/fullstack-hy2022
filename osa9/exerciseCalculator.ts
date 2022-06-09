@@ -1,6 +1,9 @@
 import __inRange from './utils/functions'
 
-const weeklyExerciseHours = [0.5, 0, 1, 1, 0, 0, 1]
+interface Data {
+  weeklyExerciseHours: number[],
+  target?: number
+}
 
 interface Result { 
   periodLength: number,
@@ -10,6 +13,27 @@ interface Result {
   ratingDescription: string,
   target: number,
   average: number 
+}
+
+const parseArguments = (args: string[]): Data => {
+  if (args.length < 9) throw new Error('Not enough arguments');
+  if (args.length > 10) throw new Error('Too many arguments');
+  if (args[9] && isNaN(Number(args[9]))) throw new Error('Provided target value was not number!');
+
+  const weeklyExerciseHours = args.length === 10
+    ? args.slice(2, -1).map(v => Number(v))
+    : args.slice(2).map(v => Number(v))
+
+  if (args.length === 10) {
+    return {
+      weeklyExerciseHours,
+      target: Number(args[9])
+    }
+  } else {
+    return {
+      weeklyExerciseHours
+    }
+  }
 }
 
 const calculateExercises = (weeklyExerciseHours: number[], target = 4) : Result => {
@@ -40,7 +64,8 @@ const calculateExercises = (weeklyExerciseHours: number[], target = 4) : Result 
 }
 
 try {
-  console.log(calculateExercises(weeklyExerciseHours, 2))
+  const { weeklyExerciseHours, target } = parseArguments(process.argv)
+  console.log(calculateExercises(weeklyExerciseHours, target))
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong.'
   if (error instanceof Error) {

@@ -1,3 +1,5 @@
+import { __resolveFilename } from './utils/functions'
+
 interface BmiValues {
   weight: number,
   height: number
@@ -17,11 +19,11 @@ const parseArguments = (args: string[]): BmiValues => {
   }
 }
 
-const calculateBmi = (height: number, weight: number) => {
+export const calculateBmi = (height: number, weight: number) => {
   const bmi = weight / ((height/100)**2)
 
   if (bmi < 18.5)
-    return 'Underweight (Unhealthy)	'
+    return 'Underweight (Unhealthy)'
   else if (bmi >= 18.5 && bmi < 22.9 )
     return 'Normal range (Healthy)'
   else if (bmi >= 23 && bmi < 24.9 )
@@ -33,8 +35,10 @@ const calculateBmi = (height: number, weight: number) => {
 }
 
 try {
-  const { weight, height } = parseArguments(process.argv)
-  console.log(calculateBmi(weight, height))
+  if (__resolveFilename(process.argv[1]) === 'bmiCalculator.ts') {
+    const { weight, height } = parseArguments(process.argv)
+    console.log(calculateBmi(weight, height))
+  }
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong.'
   if (error instanceof Error) {

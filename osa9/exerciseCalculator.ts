@@ -1,4 +1,4 @@
-import __inRange from './utils/functions'
+import { __inRange } from './utils/functions'
 
 interface Data {
   weeklyExerciseHours: number[],

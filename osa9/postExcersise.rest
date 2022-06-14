@@ -1,0 +1,13 @@
+@hostname = localhost
+@port = 3003
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+# POST /exercises
+POST http://{{host}}/exercises HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "daily_exercises": [1, 0, 0, 1, 0, 1, 0.75], 
+  "target": 4
+}

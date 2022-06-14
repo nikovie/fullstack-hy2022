@@ -1,0 +1,3 @@
+[submodule "osa9-c/patientor-front"]
+	path = osa9-c/patientor-front
+	url = https://github.com/nikovie/patientor.git

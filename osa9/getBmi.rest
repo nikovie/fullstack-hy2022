@@ -1,0 +1,8 @@
+@hostname = localhost
+@port = 3003
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+# POST /bmi
+GET http://{{host}}/bmi?height=188&weight=88
+Content-Type: {{contentType}}

@@ -1,8 +1,10 @@
-import { __inRange } from './utils/functions';
+import { __inRange, __resolveFilename } from './utils/functions';
+
+const defaultTarget = 4;
 
 interface Data {
   weeklyExerciseHours: number[],
-  target?: number
+  target: number
 }
 
 interface Result { 
@@ -31,12 +33,13 @@ const parseArguments = (args: string[]): Data => {
     };
   } else {
     return {
-      weeklyExerciseHours
+      weeklyExerciseHours,
+      target: defaultTarget
     };
   }
 };
 
-const calculateExercises = (weeklyExerciseHours: number[], target = 4) : Result => {
+export const calculateExercises = (weeklyExerciseHours: number[], target: number) : Result => {
   const periodLength = weeklyExerciseHours.length;
   const trainingDays = weeklyExerciseHours.filter(n => n > 0).length;
   const trainingHours = weeklyExerciseHours.reduce((acc, val) => acc + val, 0);
@@ -64,8 +67,10 @@ const calculateExercises = (weeklyExerciseHours: number[], target = 4) : Result 
 };
 
 try {
-  const { weeklyExerciseHours, target } = parseArguments(process.argv);
-  console.log(calculateExercises(weeklyExerciseHours, target));
+  if (__resolveFilename(process.argv[1]) === 'exerciseCalculator.ts') {
+    const { weeklyExerciseHours, target } = parseArguments(process.argv);
+    console.log(calculateExercises(weeklyExerciseHours, target));
+  }
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong.';
   if (error instanceof Error) {

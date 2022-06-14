@@ -1,7 +1,10 @@
 import express = require('express');
 const app = express();
+app.use(express.json());
 
+import { __isNumberArray } from './utils/functions';
 import * as bmiCalculator from './bmiCalculator';
+import { calculateExercises } from './exerciseCalculator';
 
 app.get('/bmi', (
   req: { 
@@ -36,6 +39,28 @@ app.get('/bmi', (
 
 app.get('/hello', (_req, res: { send: (arg0: string) => void; }) => {
   res.send('Hello Full Stack');
+});
+
+app.post('/exercises', (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { daily_exercises, target } = req.body;
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if ((daily_exercises.length === 7 && __isNumberArray(daily_exercises))) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const result = calculateExercises(daily_exercises, Number(target));
+    res.json(result);
+  } 
+  else if (!daily_exercises) {
+    res.json({
+      error: "parameters missing"
+    });
+  } else {
+    res.json({ 
+      error: "malformed parameters"
+    });
+  }
+  return res.end();
 });
 
 const PORT = 3003;

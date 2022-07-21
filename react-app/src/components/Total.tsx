@@ -1,11 +1,8 @@
-import { CourseParts } from "../App";
-
-const Total = ({ courses }: { courses: CourseParts[] }) => {
+const Total = ({ exercises }: { exercises: number}) => {
   return (
-    <p>
-      Number of exercises{" "}
-      { courses.reduce((carry, part) => carry + part.exerciseCount, 0) }
-    </p>
+    <h2>
+      Number of exercises: { exercises }
+    </h2>
   )
 }
 
